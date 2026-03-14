@@ -17,10 +17,17 @@ function pairingKey(s1, a1, s2, a2) {
 
 async function submitPairing() {
 
-    let s1 = spirit1.value
-    let a1 = aspect1.value
-    let s2 = spirit2.value
-    let a2 = aspect2.value
+    const s1 = document.getElementById("spirit1").value
+    const s2 = document.getElementById("spirit2").value
+    const a1 = document.getElementById("aspect1").value
+    const a2 = document.getElementById("aspect2").value
+
+    if(!s1 || !s2){
+
+        alert("Please select both spirits before submitting.")
+        return
+        
+        }
 
     let strong = parseInt(document.getElementById("strong").value)
     let gamebreaking = parseInt(document.getElementById("gamebreaking").value)
@@ -52,6 +59,7 @@ async function submitPairing() {
 
             })
             .eq("pair_key", key)
+        alert("Rating added to existing pairing!")
 
     } else {
 
@@ -76,6 +84,7 @@ async function submitPairing() {
                 votes: 1
 
             })
+        alert("Pairing submitted!")
 
     }
 

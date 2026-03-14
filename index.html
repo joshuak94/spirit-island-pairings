@@ -3,71 +3,87 @@
 
 <head>
 
-<title>Spirit Island Pairings</title>
+    <title>Spirit Island Pairings</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 </head>
 
 <body>
 
-<h1>Spirit Island Pairings</h1>
+    <h1>Spirit Island Pairings</h1>
 
-<section>
+    <section>
 
-<h2>Top Pairings</h2>
+        <h2>Top Pairings</h2>
 
-<div id="pairings"></div>
+        <div id="pairings"></div>
 
-</section>
+    </section>
 
-<section>
+    <section>
 
-<h2>Submit Rating</h2>
+        <h2>Submit Rating</h2>
 
-<select id="spirit1"></select>
-<select id="aspect1"></select>
+        <select id="spirit1"></select>
+        <select id="aspect1"></select>
 
-<select id="spirit2"></select>
-<select id="aspect2"></select>
+        <select id="spirit2"></select>
+        <select id="aspect2"></select>
 
-<div class="rating">
+        <div class="rating">
 
-<label>Strong: How strong is this pairing?</label>
-<input type="range" min="1" max="10" value="5" id="strong">
+            <label>Strong: How strong is this pairing?</label>
+            <input type="range" min="1" max="10" value="5" id="strong" list="ticks">
+            <div class="tick-labels">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
 
-</div>
+        </div>
 
-<div class="rating">
+        <div class="rating">
 
-<label>Game-Breaking: How much does this pairing change the rules of the game?</label>
-<input type="range" min="1" max="10" value="5" id="game-breaking">
+            <label>Game-Breaking: How much does this pairing change the rules of the game?</label>
+            <input type="range" min="1" max="10" value="5" id="gamebreaking" list="ticks">
+            <div class="tick-labels">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
 
-</div>
+        </div>
 
-<div class="rating">
+        <div class="rating">
 
-<label>Thematic: How well does this pairing mesh thematically?</label>
-<input type="range" min="1" max="10" value="5" id="thematic">
+            <label>Thematic: How well does this pairing mesh thematically?</label>
+            <input type="range" min="1" max="10" value="5" id="thematic" list="ticks">
+            <div class="tick-labels">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
 
-</div>
+        </div>
 
-<div class="rating">
+        <div class="rating">
 
-<label>Fun: How fun is this pairing to play?</label>
-<input type="range" min="1" max="10" value="5" id="fun">
+            <label>Fun: How fun is this pairing to play?</label>
+            <input type="range" min="1" max="10" value="5" id="fun" list="ticks">
+            <div class="tick-labels">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
 
-</div>
+        </div>
 
-<button onclick="submitPairing()">Submit</button>
+        <button onclick="submitPairing()">Submit</button>
 
-</section>
+    </section>
 
-<script src="spirits.js"></script>
-<script src="aspects.js"></script>
-<script src="app.js"></script>
+    <script src="spirits.js"></script>
+    <script src="aspects.js"></script>
+    <script src="app.js"></script>
 
 </body>
 

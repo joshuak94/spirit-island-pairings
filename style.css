@@ -1,38 +1,51 @@
-body{
-font-family:system-ui;
-max-width:900px;
-margin:auto;
-background:#f4f6f8;
-}
-    
-.pairing{
-background:white;
-padding:18px;
-margin:10px 0;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
+body {
+    font-family: system-ui;
+    max-width: 900px;
+    margin: auto;
+    background: #f4f6f8;
 }
 
-.bar{
-height:12px;
-background:#ddd;
-border-radius:6px;
-margin-bottom:10px;
+.pairing {
+    background: white;
+    padding: 18px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.fill{
-height:100%;
-background:#ffb400;
-border-radius:6px;
+.bar {
+    height: 12px;
+    background: #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
 }
 
-.rating{
-display:flex;
-flex-direction:column;
-margin-bottom:12px;
+.fill {
+    height: 100%;
+    background: #ffb400;
+    border-radius: 6px;
 }
 
-.rating label{
-font-weight:600;
-margin-bottom:4px;
+.rating {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.rating label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.tick-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-top: -4px;
+    margin-bottom: 10px;
+    padding: 0 4px;
+}
+
+.rating input[type="range"] {
+    width: 100%;
 }
