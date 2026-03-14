@@ -22,9 +22,10 @@ async function submitPairing() {
     let s2 = spirit2.value
     let a2 = aspect2.value
 
-    let strength = parseInt(document.getElementById("strength").value)
-    let synergy = parseInt(document.getElementById("synergy").value)
-    let theme = parseInt(document.getElementById("theme").value)
+    let strong = parseInt(document.getElementById("strong").value)
+    let gamebreaking = parseInt(document.getElementById("gamebreaking").value)
+    let thematic = parseInt(document.getElementById("thematic").value)
+    let fun = parseInt(document.getElementById("fun").value)
 
     let key = pairingKey(s1, a1, s2, a2)
 
@@ -41,9 +42,10 @@ async function submitPairing() {
             .from("pairings")
             .update({
 
-                strength_sum: p.strength_sum + strength,
-                synergy_sum: p.synergy_sum + synergy,
-                theme_sum: p.theme_sum + theme,
+                strong_sum: p.strong_sum + strong,
+                gamebreaking_sum: p.gamebreaking_sum + gamebreaking,
+                thematic_sum: p.thematic_sum + thematic,
+                fun_sum: p.fun_sum + fun,
 
                 ratings: p.ratings + 1,
                 votes: p.votes + 1
@@ -65,9 +67,10 @@ async function submitPairing() {
                 spirit2: s2,
                 aspect2: a2,
 
-                strength_sum: strength,
-                synergy_sum: synergy,
-                theme_sum: theme,
+                strong_sum: strong,
+                gamebreaking_sum: gamebreaking,
+                thematic_sum: thematic,
+                fun_sum: fun,
 
                 ratings: 1,
                 votes: 1
@@ -92,9 +95,10 @@ async function loadPairings() {
 
     data.forEach(p => {
 
-        let strength = (p.strength_sum / p.ratings).toFixed(1)
-        let synergy = (p.synergy_sum / p.ratings).toFixed(1)
-        let theme = (p.theme_sum / p.ratings).toFixed(1)
+        let strong = (p.strong_sum / p.ratings).toFixed(1)
+        let gamebreaking = (p.gamebreaking_sum / p.ratings).toFixed(1)
+        let thematic = (p.thematic_sum / p.ratings).toFixed(1)
+        let fun = (p.fun_sum / p.ratings).toFixed(1)
 
         let div = document.createElement("div")
 
@@ -106,14 +110,17 @@ async function loadPairings() {
 
 Votes: ${p.votes}
 
-Strength ${strength}
-<div class="bar"><div class="fill" style="width:${strength * 10}%"></div></div>
+Strong ${strong}
+<div class="bar"><div class="fill" style="width:${strong * 10}%"></div></div>
 
-Synergy ${synergy}
-<div class="bar"><div class="fill" style="width:${synergy * 10}%"></div></div>
+Gamebreaking ${gamebreaking}
+<div class="bar"><div class="fill" style="width:${gamebreaking * 10}%"></div></div>
 
-Theme ${theme}
-<div class="bar"><div class="fill" style="width:${theme * 10}%"></div></div>
+Thematic ${thematic}
+<div class="bar"><div class="fill" style="width:${thematic * 10}%"></div></div>
+
+Fun ${fun}
+<div class="bar"><div class="fill" style="width:${fun * 10}%"></div></div>
 
 Ratings: ${p.ratings}
 
