@@ -1,7 +1,7 @@
-const SUPABASE_URL="https://supabase.com/dashboard/project/gldhthyaunfodjmhqlem"
+const SUPABASE_URL="https://gldhthyaunfodjmhqlem.supabase.co/"
 const SUPABASE_KEY="sb_publishable_dUnIA9a7waanGtz__9vtJg_VYmJs3Uj"
 
-const supabase = supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 
 loadPairings()
 
@@ -28,7 +28,7 @@ let theme=parseInt(document.getElementById("theme").value)
 
 let key=pairingKey(s1,a1,s2,a2)
 
-let { data } = await supabase
+let { data } = await supabaseClient
 .from("pairings")
 .select("*")
 .eq("pair_key",key)
@@ -37,7 +37,7 @@ if(data.length>0){
 
 let p=data[0]
 
-await supabase
+await supabaseClient
 .from("pairings")
 .update({
 
@@ -53,7 +53,7 @@ votes:p.votes+1
 
 }else{
 
-await supabase
+await supabaseClient
 .from("pairings")
 .insert({
 
@@ -82,7 +82,7 @@ loadPairings()
 
 async function loadPairings(){
 
-let { data } = await supabase
+let { data } = await supabaseClient
 .from("pairings")
 .select("*")
 
