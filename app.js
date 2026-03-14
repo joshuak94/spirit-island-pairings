@@ -1,4 +1,4 @@
-const OWNER = "YOUR_GITHUB_USERNAME"
+const OWNER = "joshuak94"
 const REPO = "spirit-island-pairings"
 
 populateDropdowns()
