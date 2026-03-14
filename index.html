@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<meta charset="UTF-8">
 <title>Spirit Island Pairings</title>
 
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 </head>
 
 <body>
 
-<header>
 <h1>Spirit Island Pairings</h1>
-<p>Community rankings of powerful spirit combinations</p>
-</header>
 
-<section class="controls">
+<section>
 
-<label>Filter Spirit</label>
-<select id="filterSpirit"></select>
+<h2>Top Pairings</h2>
 
-<input id="search" placeholder="Search pairings">
+<div id="pairings"></div>
 
 </section>
 
 <section>
 
-<h2>Top Pairings</h2>
-<div id="pairings"></div>
-
-</section>
-
-<section class="submit">
-
-<h2>Submit Pairing Rating</h2>
-
-<div class="form">
+<h2>Submit Rating</h2>
 
 <select id="spirit1"></select>
 <select id="aspect1"></select>
@@ -56,11 +45,7 @@
 <label>Fun: How fun is this pairing to play?</label>
 <input type="range" min="1" max="10" value="5" id="fun">
 
-<textarea id="reason" placeholder="Optional explanation"></textarea>
-
 <button onclick="submitPairing()">Submit</button>
-
-</div>
 
 </section>
 
@@ -69,4 +54,5 @@
 <script src="app.js"></script>
 
 </body>
+
 </html>
