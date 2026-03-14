@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Spirit Island Pairings</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+<h1>Spirit Island Pairings</h1>
+<p>Community favorite spirit combinations</p>
+</header>
+
+<section class="controls">
+
+<label>Filter by Spirit</label>
+<select id="filterSpirit"></select>
+
+<input type="text" id="search" placeholder="Search pairings">
+
+</section>
+
+
+<section>
+
+<h2>🔥 Top Pairings</h2>
+
+<div id="pairings"></div>
+
+</section>
+
+
+<section class="submit">
+
+<h2>➕ Submit New Pairing</h2>
+
+<div class="pair-form">
+
+<select id="spirit1"></select>
+<select id="aspect1"></select>
+
+<select id="spirit2"></select>
+<select id="aspect2"></select>
+
+<textarea id="reason" placeholder="Why is this pairing good?"></textarea>
+
+<select id="reasonType">
+<option>Strong</option>
+<option>Game-breaking</option>
+<option>Thematic</option>
+</select>
+
+<button onclick="submitPairing()">Submit</button>
+
+</div>
+
+</section>
+
+<script src="spirits.js"></script>
+<script src="aspects.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
