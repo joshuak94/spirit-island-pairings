@@ -198,5 +198,13 @@ window.addEventListener("DOMContentLoaded", () => {
         .addEventListener("change", () => updateAspect("spirit2", "aspect2"));
 
     loadPairings();
+    const sliders = ["strength", "synergy", "theme"];
+    sliders.forEach(id => {
+        const input = document.getElementById(id);
+        const valueSpan = document.getElementById(id + "-value");
+        input.addEventListener("input", e => {
+            valueSpan.textContent = e.target.value;
+        });
+    });
 
 });

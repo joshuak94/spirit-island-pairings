@@ -37,15 +37,28 @@ body {
     margin-bottom: 4px;
 }
 
-.tick-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-top: -4px;
-    margin-bottom: 10px;
-    padding: 0 4px;
+.slider-container {
+    position: relative;
+    width: 100%;
 }
 
 .rating input[type="range"] {
     width: 100%;
+    display: block;
+    margin: 0;
+}
+
+.tick-labels {
+    position: absolute;
+    width: 100%;
+    top: 18px;
+    /* distance below the slider, adjust as needed */
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+    /* so they don’t interfere with slider */
 }
