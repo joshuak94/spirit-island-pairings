@@ -1,56 +1,61 @@
 body{
-font-family: system-ui;
-max-width: 1000px;
-margin:auto;
-background:#f4f6f8;
-color:#222;
-}
-
-header{
-text-align:center;
-margin:30px 0;
-}
-
-.controls{
-display:flex;
-gap:15px;
-margin-bottom:20px;
-}
-
-#pairings{
-display:grid;
-gap:15px;
-}
-
-.pairing{
-background:white;
-padding:18px;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,0.08);
-}
-
-.vote{
-background:#ffb400;
-border:none;
-padding:6px 12px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.submit{
-margin-top:40px;
-}
-
-.pair-form{
-display:grid;
-gap:10px;
-}
-
-textarea{
-height:80px;
-}
-
-select,textarea,button,input{
-padding:8px;
-font-size:14px;
-}
+    font-family:system-ui;
+    max-width:1000px;
+    margin:auto;
+    background:#f4f6f8;
+    color:#222;
+    }
+    
+    header{
+    text-align:center;
+    margin:30px 0;
+    }
+    
+    .controls{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+    }
+    
+    #pairings{
+    display:grid;
+    gap:15px;
+    }
+    
+    .pairing{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .bar{
+    height:10px;
+    background:#ddd;
+    border-radius:5px;
+    margin:5px 0 12px 0;
+    }
+    
+    .fill{
+    height:100%;
+    background:#ffb400;
+    border-radius:5px;
+    }
+    
+    .submit{
+    margin-top:40px;
+    }
+    
+    .form{
+    display:grid;
+    gap:10px;
+    }
+    
+    textarea{
+    height:80px;
+    }
+    
+    select,input,textarea,button{
+    padding:8px;
+    font-size:14px;
+    }
