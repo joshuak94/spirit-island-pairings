@@ -34,55 +34,48 @@
         <select id="aspect2"></select>
 
         <div class="rating">
-
-            <label>Strong: How strong is this pairing?</label>
+            <label>Strong: How strong is this pairing? <span id="strong-value">5</span></label>
             <div class="slider-container">
-                <input type="range" min="1" max="10" value="5" id="strong" list="ticks">
+                <input type="range" min="1" max="10" value="5" id="strong">
                 <div class="tick-labels">
                     <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-
         </div>
 
         <div class="rating">
-
-            <label>Game-Breaking: How much does this pairing change the rules of the game?</label>
+            <label>Game-Breaking: How much does this pairing change the rules of the game? <span
+                    id="gamebreaking-value">5</span></label>
             <div class="slider-container">
-                <input type="range" min="1" max="10" value="5" id="gamebreaking" list="ticks">
+                <input type="range" min="1" max="10" value="5" id="gamebreaking">
                 <div class="tick-labels">
                     <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-
         </div>
 
         <div class="rating">
-
-            <label>Thematic: How well does this pairing mesh thematically?</label>
+            <label>Thematic: How well does this pairing mesh thematically? <span id="thematic-value">5</span></label>
             <div class="slider-container">
-                <input type="range" min="1" max="10" value="5" id="thematic" list="ticks">
+                <input type="range" min="1" max="10" value="5" id="thematic">
                 <div class="tick-labels">
                     <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-
         </div>
 
         <div class="rating">
-
-            <label>Fun: How fun is this pairing to play?</label>
+            <label>Fun: How fun is this pairing to play? <span id="fun-value">5</span></label>
             <div class="slider-container">
-                <input type="range" min="1" max="10" value="5" id="fun" list="ticks">
+                <input type="range" min="1" max="10" value="5" id="fun">
                 <div class="tick-labels">
                     <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-
         </div>
 
         <button onclick="submitPairing()">Submit</button>
