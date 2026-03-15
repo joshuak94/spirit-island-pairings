@@ -172,13 +172,24 @@ async function loadPairings() {
     pairings.forEach(p => {
 
         let div = document.createElement("div")
+        let voted = JSON.parse(localStorage.getItem("votedPairings") || "[]")
+
+        if (voted.includes(p.pair_key)) {
+            setTimeout(() => {
+                let btn = document.getElementById("vote-" + p.pair_key)
+                if (btn) btn.disabled = true
+            }, 0)
+        }
         div.className = "pairing"
 
         div.innerHTML = `
     
     <h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
-    
-    Votes: ${p.votes}
+
+    <button onclick="upvotePairing('${p.pair_key}')" id="vote-${p.pair_key}">
+    👍 Upvote
+    </button>
+    Upvote: Equivalent to submitting the same pairing with the same values as below
     
     Strong ${p.strong.toFixed(1)}
     <div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
@@ -199,6 +210,61 @@ async function loadPairings() {
         container.appendChild(div)
 
     })
+
+}
+
+async function upvotePairing(key) {
+
+    let voted = JSON.parse(localStorage.getItem("votedPairings") || "[]")
+
+    if (voted.includes(key)) {
+        alert("You already voted for this pairing.")
+        return
+    }
+
+    voted.push(key)
+    localStorage.setItem("votedPairings", JSON.stringify(voted))
+
+    // get current pairing data
+    let { data } = await supabaseClient
+        .from("pairings")
+        .select("*")
+        .eq("pair_key", key)
+        .single()
+
+    let p = data
+
+    // compute averages
+    let strongAvg = p.strong_sum / p.ratings
+    let gamebreakingAvg = p.gamebreaking_sum / p.ratings
+    let thematicAvg = p.thematic_sum / p.ratings
+    let funAvg = p.fun_sum / p.ratings
+
+    // update database
+    await supabaseClient
+        .from("pairings")
+        .update({
+
+            votes: p.votes + 1,
+            ratings: p.ratings + 1,
+
+            strong_sum: p.strong_sum + strongAvg,
+            gamebreaking_sum: p.gamebreaking_sum + gamebreakingAvg,
+            thematic_sum: p.thematic_sum + thematicAvg,
+            fun_sum: p.fun_sum + funAvg
+
+        })
+        .eq("pair_key", key)
+
+    // disable the button immediately
+    let btn = document.getElementById("vote-"+key)
+
+    if(btn){
+        btn.disabled = true
+        btn.textContent = "✓ Voted"
+    }
+    // refresh list
+    loadPairings()
 
 }
 
