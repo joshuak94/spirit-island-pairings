@@ -14,6 +14,15 @@
 <body>
 
     <h1>Spirit Island Pairings</h1>
+    <h2> How to use:</h2>
+    <section>
+        <h3>Submit rating:</h3> 
+        Submit a spirit pair. Rank them based on four categories, explained below. 
+        If you submit an already existing pairing, it will automatically add one vote and average your scores with previous scores.
+        <h3>View Submitted Pairings:</h3>
+        View already submitted pairings. You can add comments to any of these. 
+        If you upvote a pairing, that's equivalent to submitting that pairing again with the same values as the current average for that pair.
+    </section>
 
     <section>
 
@@ -23,7 +32,7 @@
         <select id="aspect1"></select>
 
         <select id="spirit2"></select>
-        <select id="aspect2"></select>
+        <select id="aspect2"></select><br><br>
 
         <div class="rating">
             <label>Strong: How strong is this pairing? <span id="strong-value">5</span></label>
@@ -34,7 +43,7 @@
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-        </div>
+        </div> <br>
 
         <div class="rating">
             <label>Game-Breaking: How much does this pairing change the rules of the game? <span
@@ -46,7 +55,7 @@
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-        </div>
+        </div> <br>
 
         <div class="rating">
             <label>Thematic: How well does this pairing mesh thematically? <span id="thematic-value">5</span></label>
@@ -57,7 +66,7 @@
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-        </div>
+        </div> <br>
 
         <div class="rating">
             <label>Fun: How fun is this pairing to play? <span id="fun-value">5</span></label>
@@ -68,10 +77,10 @@
                     <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
                 </div>
             </div>
-        </div>
+        </div> <br>
 
         <label for="comment">Comment (optional):</label>
-        <textarea id="comment" rows="2" cols="40" placeholder="How is this pairing strong/gamebreaking/thematic/fun?"></textarea>
+        <textarea id="comment" rows="2" placeholder="How is this pairing strong/gamebreaking/thematic/fun?" style="width:100%; box-sizing:border-box;"></textarea>
 
         <button onclick="submitPairing()">Submit</button>
 

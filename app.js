@@ -181,8 +181,8 @@ async function loadPairings() {
         div.innerHTML = `
         <h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
 
-        <button id="vote-${p.pair_key}">👍 Upvote</button> <br>
-        Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
+        <button id="vote-${p.pair_key}">👍 Upvote</button>
+        <small>(Equivalent to submitting the same pairing with the same values as below.)</small><br><br>
 
         Strong ${p.strong.toFixed(1)}
         <div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
