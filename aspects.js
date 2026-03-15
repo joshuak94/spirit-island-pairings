@@ -1,12 +1,14 @@
 const aspects = {
 
 "River Surges in Sunlight":[
+    "Any",
     "Base",
     "Sunshine",
     "Travel",
     "Haven",
 ],
 "Lightning's Swift Strike":[
+    "Any",
     "Base",
     "Pandemonium",
     "Wind",
@@ -14,12 +16,14 @@ const aspects = {
     "Sparking",
 ],
 "Vital Strength of the Earth":[
+    "Any",
     "Base",
     "Resilience",
     "Might",
     "Nourishing",
 ],
 "Shadows Flicker Like Flame":[
+    "Any",
     "Base",
     "Madness",
     "Reach",
@@ -28,38 +32,46 @@ const aspects = {
     "Dark Fire",
 ],
 "Thunderspeaker":[
+    "Any",
     "Base",
     "Tactician",
     "Warrior",
 ],
 "A Spread of Rampant Green":[
+    "Any",
     "Base",
     "Regrowth",
     "Tangles",
 ],
 "Bringer of Dreams and Nightmares":[
+    "Any",
     "Base",
     "Enticing",
     "Violence",
 ],
 "Ocean's Hungry Grasp":[
+    "Any",
     "Base",
     "Deeps",
 ],
 "Keeper of the Forbidden Wilds":[
+    "Any",
     "Base",
     "Spreading Hostility",
 ],
 "Sharp Fangs Behind the Leaves":[
+    "Any",
     "Base",
     "Encircle",
     "Unconstrained",
 ],
 "Heart of the Wildfire":[
+    "Any",
     "Base",
     "Transforming",
 ],
 "Serpent Slumbering Beneath the Island":[
+    "Any",
     "Base",
     "Locus",
 ],
@@ -67,6 +79,7 @@ const aspects = {
     "Base",
 ],
 "Lure of the Deep Wilderness":[
+    "Any",
     "Base",
     "Lair",
 ],
@@ -74,6 +87,7 @@ const aspects = {
     "Base",
 ],
 "Shifting Memory of Ages":[
+    "Any",
     "Base",
     "Intensify",
     "Mentor",
@@ -85,6 +99,7 @@ const aspects = {
     "Base",
 ],
 "Shroud of Silent Mist":[
+    "Any",
     "Base",
     "Stranded",
 ],
