@@ -186,9 +186,7 @@ async function loadPairings() {
     
     <h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
 
-    <button onclick="upvotePairing('${p.pair_key}')" id="vote-${p.pair_key}">
-    👍 Upvote
-    </button> <br>
+    <button id="vote-${p.pair_key}">👍 Upvote</button> <br>
     Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
     
     Strong ${p.strong.toFixed(1)}
@@ -208,6 +206,10 @@ async function loadPairings() {
     `
 
         container.appendChild(div)
+        let btn = document.getElementById("vote-" + p.pair_key)
+        if (btn) {
+            btn.addEventListener("click", () => upvotePairing(p.pair_key))
+        }
 
     })
 
@@ -257,9 +259,9 @@ async function upvotePairing(key) {
         .eq("pair_key", key)
 
     // disable the button immediately
-    let btn = document.getElementById("vote-"+key)
+    let btn = document.getElementById("vote-" + key)
 
-    if(btn){
+    if (btn) {
         btn.disabled = true
         btn.textContent = "✓ Voted"
     }
