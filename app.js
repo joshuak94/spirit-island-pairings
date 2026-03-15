@@ -188,8 +188,8 @@ async function loadPairings() {
 
     <button onclick="upvotePairing('${p.pair_key}')" id="vote-${p.pair_key}">
     👍 Upvote
-    </button>
-    Upvote: Equivalent to submitting the same pairing with the same values as below
+    </button> <br>
+    Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
     
     Strong ${p.strong.toFixed(1)}
     <div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
