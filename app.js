@@ -116,8 +116,12 @@ async function submitPairing() {
 
 }
 
+// ---------------------
+// Load and display pairings
+// ---------------------
 async function loadPairings() {
 
+    // fetch all pairings from Supabase
     let { data } = await supabaseClient
         .from("pairings")
         .select("*")
@@ -129,92 +133,81 @@ async function loadPairings() {
     let container = document.getElementById("pairings")
     container.innerHTML = ""
 
-    let pairings = data.map(p => {
+    // compute averages
+    let pairings = data.map(p => ({
+        ...p,
+        strong: p.strong_sum / p.ratings,
+        gamebreaking: p.gamebreaking_sum / p.ratings,
+        thematic: p.thematic_sum / p.ratings,
+        fun: p.fun_sum / p.ratings
+    }))
 
-        return {
-
-            ...p,
-
-            strong: p.strong_sum / p.ratings,
-            gamebreaking: p.gamebreaking_sum / p.ratings,
-            thematic: p.thematic_sum / p.ratings,
-            fun: p.fun_sum / p.ratings
-
-        }
-
-    })
-
+    // filter by spirit if selected
     if (filterSpirit !== "all") {
-
         pairings = pairings.filter(p =>
-
-            p.spirit1 === filterSpirit ||
-            p.spirit2 === filterSpirit
-
+            p.spirit1 === filterSpirit || p.spirit2 === filterSpirit
         )
-
     }
 
+    // sort by selected metric
     pairings.sort((a, b) => {
-
-        if (sortBy === "votes") {
-            return b.votes - a.votes
-        }
-
+        if (sortBy === "votes") return b.votes - a.votes
         return b[sortBy] - a[sortBy]
-
     })
 
-    if (top10) {
-        pairings = pairings.slice(0, 10)
-    }
+    // show top 10 if checked
+    if (top10) pairings = pairings.slice(0, 10)
 
+    // get list of already voted pair_keys from localStorage
+    let voted = JSON.parse(localStorage.getItem("votedPairings") || "[]")
+
+    // render each pairing
     pairings.forEach(p => {
-
         let div = document.createElement("div")
-        let voted = JSON.parse(localStorage.getItem("votedPairings") || "[]")
-
-        if (voted.includes(p.pair_key)) {
-            setTimeout(() => {
-                let btn = document.getElementById("vote-" + p.pair_key)
-                if (btn) btn.disabled = true
-            }, 0)
-        }
         div.className = "pairing"
 
+        // render HTML
         div.innerHTML = `
-    
-    <h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
+<h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
 
-    <button id="vote-${p.pair_key}">👍 Upvote</button> <br>
-    Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
-    
-    Strong ${p.strong.toFixed(1)}
-    <div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
-    
-    Gamebreaking ${p.gamebreaking.toFixed(1)}
-    <div class="bar"><div class="fill" style="width:${p.gamebreaking * 10}%"></div></div>
-    
-    Thematic ${p.thematic.toFixed(1)}
-    <div class="bar"><div class="fill" style="width:${p.thematic * 10}%"></div></div>
-    
-    Fun ${p.fun.toFixed(1)}
-    <div class="bar"><div class="fill" style="width:${p.fun * 10}%"></div></div>
-    
-    Ratings: ${p.ratings}
-    
-    `
+<button id="vote-${p.pair_key}">👍 Upvote</button> <br>
+Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
+
+Strong ${p.strong.toFixed(1)}
+<div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
+
+Gamebreaking ${p.gamebreaking.toFixed(1)}
+<div class="bar"><div class="fill" style="width:${p.gamebreaking * 10}%"></div></div>
+
+Thematic ${p.thematic.toFixed(1)}
+<div class="bar"><div class="fill" style="width:${p.thematic * 10}%"></div></div>
+
+Fun ${p.fun.toFixed(1)}
+<div class="bar"><div class="fill" style="width:${p.fun * 10}%"></div></div>
+
+Ratings: ${p.ratings}
+        `
 
         container.appendChild(div)
+
+        // attach safe click listener
         let btn = document.getElementById("vote-" + p.pair_key)
         if (btn) {
-            btn.addEventListener("click", () => upvotePairing(p.pair_key))
+            // disable if already voted
+            if (voted.includes(p.pair_key)) {
+                btn.disabled = true
+                btn.textContent = "✓ Voted"
+            } else {
+                btn.addEventListener("click", () => upvotePairing(p.pair_key))
+            }
         }
-
     })
-
 }
 
+
+// ---------------------
+// Upvote a pairing
+// ---------------------
 async function upvotePairing(key) {
 
     let voted = JSON.parse(localStorage.getItem("votedPairings") || "[]")
@@ -227,47 +220,48 @@ async function upvotePairing(key) {
     voted.push(key)
     localStorage.setItem("votedPairings", JSON.stringify(voted))
 
-    // get current pairing data
+    // fetch current pairing row
     let { data } = await supabaseClient
         .from("pairings")
         .select("*")
         .eq("pair_key", key)
         .single()
 
+    if (!data) {
+        alert("Error: pairing not found.")
+        return
+    }
+
     let p = data
 
-    // compute averages
+    // compute current averages
     let strongAvg = p.strong_sum / p.ratings
     let gamebreakingAvg = p.gamebreaking_sum / p.ratings
     let thematicAvg = p.thematic_sum / p.ratings
     let funAvg = p.fun_sum / p.ratings
 
-    // update database
+    // update the pairing: +1 vote, +1 rating, sums incremented by averages
     await supabaseClient
         .from("pairings")
         .update({
-
             votes: p.votes + 1,
             ratings: p.ratings + 1,
-
             strong_sum: p.strong_sum + strongAvg,
             gamebreaking_sum: p.gamebreaking_sum + gamebreakingAvg,
             thematic_sum: p.thematic_sum + thematicAvg,
             fun_sum: p.fun_sum + funAvg
-
         })
         .eq("pair_key", key)
 
-    // disable the button immediately
+    // immediately update the button UI
     let btn = document.getElementById("vote-" + key)
-
     if (btn) {
         btn.disabled = true
         btn.textContent = "✓ Voted"
     }
-    // refresh list
-    loadPairings()
 
+    // refresh the list
+    loadPairings()
 }
 
 function populateDropdowns() {
