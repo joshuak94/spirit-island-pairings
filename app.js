@@ -15,6 +15,29 @@ function pairingKey(s1, a1, s2, a2) {
 
 }
 
+function updateSpirit2Options() {
+
+    const s1 = document.getElementById("spirit1").value
+    const s2 = document.getElementById("spirit2")
+
+    s2.innerHTML = ""
+
+    spirits.forEach(spirit => {
+
+        if (spirit !== s1) {
+
+            const option = document.createElement("option")
+            option.value = spirit
+            option.textContent = spirit
+            s2.appendChild(option)
+
+        }
+
+    })
+
+    updateAspect("spirit2", "aspect2")
+}
+
 async function submitPairing() {
 
     const s1 = document.getElementById("spirit1").value
@@ -22,12 +45,13 @@ async function submitPairing() {
     const a1 = document.getElementById("aspect1").value
     const a2 = document.getElementById("aspect2").value
 
-    if(!s1 || !s2){
+    if (!s1 || !s2) {
 
         alert("Please select both spirits before submitting.")
         return
-        
-        }
+
+    }
+
 
     let strong = parseInt(document.getElementById("strong").value)
     let gamebreaking = parseInt(document.getElementById("gamebreaking").value)
@@ -98,42 +122,79 @@ async function loadPairings() {
         .from("pairings")
         .select("*")
 
-    let container = document.getElementById("pairings")
+    let filterSpirit = document.getElementById("filter-spirit").value
+    let sortBy = document.getElementById("sort-by").value
+    let top10 = document.getElementById("top10").checked
 
+    let container = document.getElementById("pairings")
     container.innerHTML = ""
 
-    data.forEach(p => {
+    let pairings = data.map(p => {
 
-        let strong = (p.strong_sum / p.ratings).toFixed(1)
-        let gamebreaking = (p.gamebreaking_sum / p.ratings).toFixed(1)
-        let thematic = (p.thematic_sum / p.ratings).toFixed(1)
-        let fun = (p.fun_sum / p.ratings).toFixed(1)
+        return {
+
+            ...p,
+
+            strong: p.strong_sum / p.ratings,
+            gamebreaking: p.gamebreaking_sum / p.ratings,
+            thematic: p.thematic_sum / p.ratings,
+            fun: p.fun_sum / p.ratings
+
+        }
+
+    })
+
+    if (filterSpirit !== "all") {
+
+        pairings = pairings.filter(p =>
+
+            p.spirit1 === filterSpirit ||
+            p.spirit2 === filterSpirit
+
+        )
+
+    }
+
+    pairings.sort((a, b) => {
+
+        if (sortBy === "votes") {
+            return b.votes - a.votes
+        }
+
+        return b[sortBy] - a[sortBy]
+
+    })
+
+    if (top10) {
+        pairings = pairings.slice(0, 10)
+    }
+
+    pairings.forEach(p => {
 
         let div = document.createElement("div")
-
         div.className = "pairing"
 
         div.innerHTML = `
-
-<h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
-
-Votes: ${p.votes}
-
-Strong ${strong}
-<div class="bar"><div class="fill" style="width:${strong * 10}%"></div></div>
-
-Gamebreaking ${gamebreaking}
-<div class="bar"><div class="fill" style="width:${gamebreaking * 10}%"></div></div>
-
-Thematic ${thematic}
-<div class="bar"><div class="fill" style="width:${thematic * 10}%"></div></div>
-
-Fun ${fun}
-<div class="bar"><div class="fill" style="width:${fun * 10}%"></div></div>
-
-Ratings: ${p.ratings}
-
-`
+    
+    <h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
+    
+    Votes: ${p.votes}
+    
+    Strong ${p.strong.toFixed(1)}
+    <div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
+    
+    Gamebreaking ${p.gamebreaking.toFixed(1)}
+    <div class="bar"><div class="fill" style="width:${p.gamebreaking * 10}%"></div></div>
+    
+    Thematic ${p.thematic.toFixed(1)}
+    <div class="bar"><div class="fill" style="width:${p.thematic * 10}%"></div></div>
+    
+    Fun ${p.fun.toFixed(1)}
+    <div class="bar"><div class="fill" style="width:${p.fun * 10}%"></div></div>
+    
+    Ratings: ${p.ratings}
+    
+    `
 
         container.appendChild(div)
 
@@ -189,19 +250,48 @@ function updateAspect(spiritID, aspectID) {
 
 window.addEventListener("DOMContentLoaded", () => {
 
+    // Populate dropdowns
     populateDropdowns();
+    let filter = document.getElementById("filter-spirit");
 
+    spirits.forEach(s => {
+
+        let option = document.createElement("option")
+        option.value = s
+        option.textContent = s
+
+        filter.appendChild(option)
+
+    })
+    updateSpirit2Options();
+
+    // Spirit dropdown listeners
     document.getElementById("spirit1")
-        .addEventListener("change", () => updateAspect("spirit1", "aspect1"));
+        .addEventListener("change", () => {
+            updateAspect("spirit1", "aspect1");
+            updateSpirit2Options();
+        });
 
     document.getElementById("spirit2")
         .addEventListener("change", () => updateAspect("spirit2", "aspect2"));
 
+    document.getElementById("filter-spirit").addEventListener("change", loadPairings);
+    document.getElementById("sort-by").addEventListener("change", loadPairings);
+    document.getElementById("top10").addEventListener("change", loadPairings);
+    // Load existing pairings from Supabase
     loadPairings();
+
+    // Slider live-value display
     const sliders = ["strong", "gamebreaking", "thematic", "fun"];
+
     sliders.forEach(id => {
         const input = document.getElementById(id);
         const valueSpan = document.getElementById(id + "-value");
+
+        if (!input || !valueSpan) return;   // prevents crashes
+
+        valueSpan.textContent = input.value;
+
         input.addEventListener("input", e => {
             valueSpan.textContent = e.target.value;
         });
