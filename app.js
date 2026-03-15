@@ -57,6 +57,7 @@ async function submitPairing() {
     let gamebreaking = parseInt(document.getElementById("gamebreaking").value)
     let thematic = parseInt(document.getElementById("thematic").value)
     let fun = parseInt(document.getElementById("fun").value)
+    let commentText = document.getElementById("comment").value.trim()
 
     let key = pairingKey(s1, a1, s2, a2)
 
@@ -83,6 +84,15 @@ async function submitPairing() {
 
             })
             .eq("pair_key", key)
+        if (commentText) {
+            let currentComments = p.comments || []
+            currentComments.push({ text: commentText, timestamp: new Date().toISOString() })
+
+            await supabaseClient
+                .from("pairings")
+                .update({ comments: currentComments })
+                .eq("pair_key", p.pair_key)
+        }
         alert("Rating added to existing pairing!")
 
     } else {
@@ -103,6 +113,7 @@ async function submitPairing() {
                 gamebreaking_sum: gamebreaking,
                 thematic_sum: thematic,
                 fun_sum: fun,
+                comments: commentText ? [{ text: commentText, timestamp: new Date().toISOString() }] : [],
 
                 ratings: 1,
                 votes: 1
@@ -162,35 +173,77 @@ async function loadPairings() {
     let voted = JSON.parse(localStorage.getItem("votedPairings") || "[]")
 
     // render each pairing
+    // render each pairing
     pairings.forEach(p => {
         let div = document.createElement("div")
         div.className = "pairing"
 
-        // render HTML
         div.innerHTML = `
-<h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
+        <h3>${p.spirit1} (${p.aspect1}) + ${p.spirit2} (${p.aspect2})</h3>
 
-<button id="vote-${p.pair_key}">👍 Upvote</button> <br>
-Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
+        <button id="vote-${p.pair_key}">👍 Upvote</button> <br>
+        Upvote: Equivalent to submitting the same pairing with the same values as below.<br>
 
-Strong ${p.strong.toFixed(1)}
-<div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
+        Strong ${p.strong.toFixed(1)}
+        <div class="bar"><div class="fill" style="width:${p.strong * 10}%"></div></div>
 
-Gamebreaking ${p.gamebreaking.toFixed(1)}
-<div class="bar"><div class="fill" style="width:${p.gamebreaking * 10}%"></div></div>
+        Gamebreaking ${p.gamebreaking.toFixed(1)}
+        <div class="bar"><div class="fill" style="width:${p.gamebreaking * 10}%"></div></div>
 
-Thematic ${p.thematic.toFixed(1)}
-<div class="bar"><div class="fill" style="width:${p.thematic * 10}%"></div></div>
+        Thematic ${p.thematic.toFixed(1)}
+        <div class="bar"><div class="fill" style="width:${p.thematic * 10}%"></div></div>
 
-Fun ${p.fun.toFixed(1)}
-<div class="bar"><div class="fill" style="width:${p.fun * 10}%"></div></div>
+        Fun ${p.fun.toFixed(1)}
+        <div class="bar"><div class="fill" style="width:${p.fun * 10}%"></div></div>
 
-Ratings: ${p.ratings}
-        `
+        Ratings: ${p.ratings}
+    `
+
+        // COMMENTS
+        if (p.comments && p.comments.length > 0) {
+            // create button
+            const toggleBtn = document.createElement("button")
+            toggleBtn.textContent = `Show Comments (${p.comments.length})`
+            toggleBtn.className = "toggle-comments-btn"
+
+            // create comments container
+            const commentsDiv = document.createElement("div")
+            commentsDiv.style.display = "none"
+            commentsDiv.style.marginTop = "5px"
+            commentsDiv.style.marginLeft = "10px"
+
+            // populate comments with numbers
+            p.comments.forEach((c, i) => {
+                const commentEl = document.createElement("div")
+                commentEl.innerHTML = `<b>${i + 1}.</b> ${c.text} <small>(${new Date(c.timestamp).toLocaleString()})</small>`
+                commentsDiv.appendChild(commentEl)
+            })
+
+            // attach toggle listener
+            toggleBtn.addEventListener("click", () => {
+                const isHidden = commentsDiv.style.display === "none"
+                commentsDiv.style.display = isHidden ? "block" : "none"
+                toggleBtn.textContent = isHidden
+                    ? "Hide Comments"
+                    : `Show Comments (${p.comments.length})`
+            })
+
+            // append button and comments div to pairing
+            div.appendChild(toggleBtn)
+            div.appendChild(commentsDiv)
+        }
 
         container.appendChild(div)
 
-        // attach safe click listener
+        // Add new comment input
+        const newCommentDiv = document.createElement("div")
+        newCommentDiv.style.marginTop = "8px"
+        newCommentDiv.innerHTML = `
+    <textarea id="new-comment-${p.pair_key}" placeholder="Add a comment..." rows="2" style="width:100%"></textarea>
+    <button>Add Comment</button>
+`
+        div.appendChild(newCommentDiv)
+        // VOTE BUTTON
         let btn = document.getElementById("vote-" + p.pair_key)
         if (btn) {
             // disable if already voted
@@ -201,6 +254,35 @@ Ratings: ${p.ratings}
                 btn.addEventListener("click", () => upvotePairing(p.pair_key))
             }
         }
+
+        const addBtn = newCommentDiv.querySelector("button")
+        addBtn.addEventListener("click", async () => {
+            const text = document.getElementById(`new-comment-${p.pair_key}`).value.trim()
+
+            if (!text) return alert("Please write a comment before submitting.")
+
+            // construct new comment object
+            const newComment = {
+                text,
+                timestamp: new Date().toISOString()
+            }
+
+            // update Supabase
+            const { error } = await supabaseClient
+                .from("pairings")
+                .update({
+                    comments: [...(p.comments || []), newComment]
+                })
+                .eq("pair_key", p.pair_key)
+
+            if (error) {
+                alert("Failed to add comment: " + error.message)
+            } else {
+                // clear input and reload pairings
+                document.getElementById(`new-comment-${p.pair_key}`).value = ""
+                loadPairings()
+            }
+        })
     })
 }
 
